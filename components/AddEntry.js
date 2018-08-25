@@ -1,41 +1,77 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { getMetricMetaInfo } from "../utils/helpers";
+import UiSlider from "./UiSlider";
+import UiSteppers from "./UiSteppers";
 
 export default class AddEntry extends Component {
   state = {
-      run: 0,
-      bike: 0,
-      swim: 0,
-      sleep: 0,
-      eat: 0,
-  }
+    run: 0,
+    bike: 0,
+    swim: 0,
+    sleep: 0,
+    eat: 0
+  };
 
-  increment = (metric) => {
-      const { max, step } = getMetricMetaInfo(info);
-      
-      this.setState((state) => {
-        const count = state[metric] + step
-        
-        return {
-            ...state,
-            [metric]: count > max ? max : count,
-        }
-    })
-  }
+  increment = metric => {
+    const { max, step } = getMetricMetaInfo(info);
 
-  decrement = (metric) => {
-      this.setState((state) => {
-        const count = state[metric] - getMetricMetaInfo(metric).step;
+    this.setState(state => {
+      const count = state[metric] + step;
 
-        return {
-            ...state,
-            [metric]: count < 0 ? 0 : count,
-        }
-      })
-  }
+      return {
+        ...state,
+        [metric]: count > max ? max : count
+      };
+    });
+  };
+
+  decrement = metric => {
+    this.setState(state => {
+      const count = state[metric] - getMetricMetaInfo(metric).step;
+
+      return {
+        ...state,
+        [metric]: count < 0 ? 0 : count
+      };
+    });
+  };
+
+  slide = (metric, value) => {
+    this.setState(() => ({
+      [metric]: value
+    }));
+  };
 
   render() {
-    return <View>{getMetricMetaInfo("bike").getIcon()}</View>;
+    const metaInfo = getMetricMetaInfo();
+    return (
+      <View>
+        {Object.keys(metaInfo).map(key => {
+          const { getIcon, type, ...rest } = metaInfo[key];
+          const value = this.state[key];
+
+          return (
+            <View key={key}>
+              {getIcon()}
+              {type === "slider" ? (
+                <UiSlider
+                  value={value}
+                  onChange={value => this.slide(key, value)}
+                  {...rest}
+                />
+              ) : (
+                <UiSteppers
+                  value={value}
+                  onIncrement={() => this.increment(key)}
+                  onDecrement={() => this.decrement(key)}
+                  {...rest}
+                />
+              )}
+            </View>
+          );
+        })}
+      </View>
+    );
   }
 }
