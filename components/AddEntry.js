@@ -6,11 +6,11 @@ import UiSteppers from "./UiSteppers";
 import DateHeader from "./DateHeader";
 
 function SubmitBtn({ onPress }) {
-    return (
-        <TouchableOpacity onPress={onPress}>
-            <Text>SUBMIT</Text>
-        </TouchableOpacity>
-    )
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <Text>SUBMIT</Text>
+    </TouchableOpacity>
+  );
 }
 
 export default class AddEntry extends Component {
@@ -23,19 +23,18 @@ export default class AddEntry extends Component {
   };
 
   submit = () => {
-      const key = timeToString()
-      const entry = this.state
-      
-      // update redux
-      this.setState(() => ({ run: 0, bike: 0, swim: 0, sleep: 0, eat: 0 }))
+    const key = timeToString();
+    const entry = this.state;
 
-      // Navigate to home
- 
-      // Save to "DB"
- 
-      // Clear local notification
+    // update redux
+    this.setState(() => ({ run: 0, bike: 0, swim: 0, sleep: 0, eat: 0 }));
 
-  }
+    // Navigate to home
+
+    // Save to "DB"
+
+    // Clear local notification
+  };
 
   increment = metric => {
     const { max, step } = getMetricMetaInfo(info);
@@ -93,7 +92,6 @@ export default class AddEntry extends Component {
                   {...rest}
                 />
               )}
-              
             </View>
           );
         })}
