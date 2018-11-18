@@ -9,7 +9,9 @@ import {
 import {
   getMetricMetaInfo,
   timeToString,
-  getDailyReminderValue
+  getDailyReminderValue,
+  clearLocalNotification,
+  setLocalNotification
 } from '../utils/helpers';
 import UiSlider from './UiSlider';
 import UiSteppers from './UiSteppers';
@@ -85,7 +87,8 @@ class AddEntry extends Component {
 
     submitEntry({ key, entry });
 
-    // Clear local notification
+    clearLocalNotification()
+      .then(setLocalNotification)
   };
   reset = () => {
     const key = timeToString();
